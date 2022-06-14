@@ -1,5 +1,6 @@
 import exampleVideoData from '../data/exampleVideoData.js';
 import VideoList from './VideoList.js';
+import VideoPlayer from './VideoPlayer.js';
 
 /*var App = () => (
   <div>
@@ -34,8 +35,19 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      videoData: exampleVideoData
+      videoData: exampleVideoData,
+      currentVideo: exampleVideoData[0]
     };
+    this.changeVideo = this.changeVideo.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  changeVideo(event) {
+    var newVideoIndex = event.target.getAttribute('index');
+    this.setState({currentVideo: exampleVideoData[newVideoIndex]});
+  }
+  handleClick(event) {
+    console.log(event.target.getAttribute('index'));
   }
 
   render() {
@@ -48,10 +60,13 @@ class App extends React.Component {
         </nav>
         <div className="row">
           <div className="col-md-7">
-            <div><h5><em>videoPlayer</em> view goes here</h5></div>
+            <VideoPlayer video={ this.state.currentVideo }/>
           </div>
           <div className="col-md-5">
-            <VideoList videos={ exampleVideoData }/>
+            <VideoList
+              videos={ this.state.videoData }
+              handleClick={this.handleClick}
+              changeVideo={this.changeVideo}/>
           </div>
         </div>
       </div>
